@@ -1,0 +1,4 @@
+[submodule "src/tests/thirdparty/cryptopp-cmake"]
+	path = src/tests/thirdparty/cryptopp-cmake
+	url = https://github.com/abdes/cryptopp-cmake.git
+	branch = CRYPTOPP_8_9_0

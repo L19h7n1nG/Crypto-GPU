@@ -10,7 +10,8 @@ __global__ void keccak_hash_kernel(
         int      number_of_blocks,
         uint8_t* output) {
     int bid = threadIdx.x + blockDim.x * blockIdx.x;
-    if (bid >= number_of_blocks) return;
+    if (bid >= number_of_blocks)
+        return;
 
     const int r_bits = 1600 - C;
     const int r_bytes = r_bits >> 3;
@@ -112,7 +113,8 @@ cudaError_t keccak_hash(
         CHK_IF_RETURN(cudaFreeAsync(output_device, stream));
     }
 
-    if (!config.is_async) return CHK_STICKY(cudaStreamSynchronize(stream));
+    if (!config.is_async)
+        return CHK_STICKY(cudaStreamSynchronize(stream));
     return CHK_LAST();
 }
 

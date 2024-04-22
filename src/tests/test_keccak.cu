@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 
     START_TIMER(keccak_timer);
 
-    keccak::Keccak256(in_ptr, input_block_size, number_of_blocks, out_ptr);
+    Keccak256(in_ptr, input_block_size, number_of_blocks, out_ptr);
     END_TIMER(keccak_timer, "Keccak")
 
     for (int i = 0; i < number_of_blocks; i++) {
