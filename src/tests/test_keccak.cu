@@ -1,4 +1,3 @@
-
 #include <chrono>
 #include <cstdint>
 #include <cstdio>
@@ -34,7 +33,6 @@ void uint8ToHexString(const uint8_t* values, int size) {
                    .count());
 
 int main(int argc, char** argv) {
-    // printf("Hello world");
     using FpMilliseconds =
             std::chrono::duration<float, std::chrono::milliseconds::period>;
     using FpMicroseconds =

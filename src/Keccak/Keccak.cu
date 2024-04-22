@@ -10,12 +10,11 @@ __global__ void keccak_hash_kernel(
         int      number_of_blocks,
         uint8_t* output) {
     int bid = threadIdx.x + blockDim.x * blockIdx.x;
-    if (bid >= number_of_blocks)
-        return;
+    if (bid >= number_of_blocks) return;
 
     const int r_bits = 1600 - C;
-    const int r_bytes = r_bits / 8;
-    const int d_bytes = D / 8;
+    const int r_bytes = r_bits >> 3;
+    const int d_bytes = D >> 3;
 
     uint8_t* b_input = input + bid * input_block_size;
     uint8_t* b_output = output + bid * d_bytes;
@@ -113,18 +112,24 @@ cudaError_t keccak_hash(
         CHK_IF_RETURN(cudaFreeAsync(output_device, stream));
     }
 
-    if (!config.is_async)
-        return CHK_STICKY(cudaStreamSynchronize(stream));
+    if (!config.is_async) return CHK_STICKY(cudaStreamSynchronize(stream));
     return CHK_LAST();
 }
 
-extern "C" cudaError_t Keccak256(
+} // namespace keccak
+
+extern "C" int Keccak256(
         uint8_t* input,
         int      input_block_size,
         int      number_of_blocks,
-        uint8_t* output) {
-    auto config = KeccakConfig::default_keccak_config();
-    return keccak_hash<512, 256>(
+        uint8_t* output,
+        bool     are_inputs_on_device = false,
+        bool     are_output_on_device = false,
+        bool     async = false) {
+    auto config = keccak::KeccakConfig::default_keccak_config();
+    config.are_inputs_on_device = are_inputs_on_device;
+    config.are_outputs_on_device = are_output_on_device;
+    config.is_async = async;
+    return keccak::keccak_hash<512, 256>(
             input, input_block_size, number_of_blocks, output, config);
 }
-} // namespace keccak

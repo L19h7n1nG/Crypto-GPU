@@ -5,15 +5,15 @@
 
 namespace device_context {
 
-constexpr std::size_t MAX_DEVICES = 32;
+constexpr size_t MAX_DEVICES = 32;
 
 /**
  * Properties of the device used in icicle functions.
  */
 struct DeviceContext {
     cudaStream_t& stream;  /**< Stream to use. Default value: 0. */
-    std::size_t device_id; /**< Index of the currently used GPU. Default value:
-                              0. */
+    size_t device_id;      /**< Index of the currently used GPU. Default value:
+                                   0. */
     cudaMemPool_t mempool; /**< Mempool to use. Default value: 0. */
 };
 
